@@ -1,0 +1,19 @@
+# Create the volume where we'll keep the bridge's files
+mkdir -p /matrix-appservice-discord
+
+# Create the configuration file. Use the sample configuration file as a template.
+# Be sure to set the database paths to something like this:
+#  database:
+#    filename: "/data/discord.db"
+#    userStorePath: "/data/user-store.db"
+#    roomStorePath: "/data/room-store.db"
+nano /matrix-appservice-discord/config.yaml
+
+# Copy the registration file to the volume
+cp discord-registration.yaml /matrix-appservice-discord/discord-registration.yaml
+
+# Optional: Build the container yourself (requires a git clone, and to be in the root of the project)
+docker build -t halfshot/matrix-appservice-discord .
+
+# Run the container
+docker run -v /matrix-appservice-discord:/data -p 9005:9005 halfshot/matrix-appservice-discord
